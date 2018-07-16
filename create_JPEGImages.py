@@ -16,13 +16,13 @@ name_number = 1
 name_length = 6
 
 # Train annotations 位置
-TRAIN_ANNO = r'G:\pycharm\INRIA2VOC\INRIADATA\original_images\Train\annotations'
+TRAIN_ANNO = r'/Users/baidu/pythonProjects/create-voc2007-dataset/original_images/Train/annotations'
 
 # Test annotations 位置
-TEST_ANNO = r'G:\pycharm\INRIA2VOC\INRIADATA\original_images\Test\annotations'
+TEST_ANNO = r'/Users/baidu/pythonProjects/create-voc2007-dataset/original_images/Test/annotations'
 
 # 图片所在位置
-ORIGIN_IMAGES = r'G:\pycharm\INRIA2VOC\INRIADATA\original_images'
+ORIGIN_IMAGES = r'/Users/baidu/pythonProjects/create-voc2007-dataset/original_images'
 
 # 输出文件
 fout = open('output.txt', 'w')
@@ -30,7 +30,7 @@ fout = open('output.txt', 'w')
 # 创建另存为的文件夹
 if not os.path.exists('JPEGImages'):
     os.mkdir('JPEGImages')
-    print "mkdir donw"
+    print("mkdir done")
 
 
 # 定义处理函数
@@ -60,17 +60,17 @@ def process(anno_path):
                     if new_name_str:
                         fout.write(new_name_str + ' ' + ' '.join(bbox) + '\n')
 
-    print "process \n{} \ndone".format(anno_path)
+    print("process \n{} \ndone".format(anno_path))
 
 
 
 # 处理Train
 process(TRAIN_ANNO)
-print name_number
+print(name_number)
 
 # 处理Test
 process(TEST_ANNO)
-print name_number
+print(name_number)
 
 
 fout.close()

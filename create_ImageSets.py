@@ -9,13 +9,12 @@ __author__ = 'peic'
 '''
 
 # ImageSets文件夹
-_IMAGE_SETS_PATH = 'ImageSets'
-_MAin_PATH = 'ImageSets\\Main'
-_XML_FILE_PATH = 'Annotations'
-
+_IMAGE_SETS_PATH = 'VOC2007/ImageSets'
+_MAin_PATH = 'VOC2007/ImageSets/Main'
+_XML_FILE_PATH = 'VOC2007/Annotations'
 
 # Train数据集编号
-_TRAIN_NUMBER = 614
+_TRAIN_NUMBER = 2000
 
 if __name__ == '__main__':
 
@@ -33,7 +32,7 @@ if __name__ == '__main__':
 
     # 遍历XML文件夹
     for root, dirs, files in os.walk(_XML_FILE_PATH):
-        print len(files)
+        print(len(files))
         for f in files:
             i = int(f.split('.')[0])
             if i > _TRAIN_NUMBER:

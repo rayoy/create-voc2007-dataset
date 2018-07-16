@@ -20,7 +20,7 @@ _ROOT_NODE = 'annotation'
 _DATABASE_NAME = 'INRIA'
 _CLASS = 'person'
 _ANNOTATION = 'PASCAL VOC2007'
-_AUTHOR = 'Peic'
+_AUTHOR = 'Ray'
 
 _SEGMENTED = '0'
 _DIFFICULT = '0'
@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
         # 构建XML文件名称
         xml_file_name = os.path.join(_ANNOTATION_SAVE_PATH, (attrs['name'].split('.'))[0] + '.xml')
-        print xml_file_name
+        print(xml_file_name)
 
         if os.path.exists( xml_file_name):
             # print('do exists')
