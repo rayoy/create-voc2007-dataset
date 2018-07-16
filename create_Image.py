@@ -7,9 +7,35 @@ from libs.shape import Shape, Point
 from libs.pascal_voc_io import PascalVocWriter
 from libs.pascal_voc_io import XML_EXT
 from libs.labelFile import LabelFile
+from PIL import Image, ImageDraw, ImageFont
 import os.path
 
 IMAGE_EXT = '.jpg'
+FONT = ImageFont.truetype('fonts/simhei.ttf', 60)
+
+# 定义添加高斯噪声的函数
+def addGaussianNoise(image, percetage):
+    G_Noiseimg = image
+    G_NoiseNum = int(percetage * image.shape[0] * image.shape[1])
+    for i in range(G_NoiseNum):
+        temp_x = np.random.randint(20, 40)
+        temp_y = np.random.randint(20, 40)
+        G_Noiseimg[temp_x][temp_y] = 255
+    return G_Noiseimg
+
+
+# 定义添加椒盐噪声的函数
+def SaltAndPepper(src, percetage):
+    SP_NoiseImg = src
+    SP_NoiseNum = int(percetage * src.shape[0] * src.shape[1])
+    for i in range(SP_NoiseNum):
+        randX = random.randint(0, src.shape[0] - 1)
+        randY = random.randint(0, src.shape[1] - 1)
+        if random.randint(0, 1) == 0:
+            SP_NoiseImg[randX, randY] = 0
+        else:
+            SP_NoiseImg[randX, randY] = 255
+    return SP_NoiseImg
 
 
 def randomTable(num):
@@ -28,12 +54,20 @@ def randomTable(num):
     rectShapes = []
 
     print("image:{}, row num={}, column num ={} ".format(num, row, column))
+
+    draw = ImageDraw.Draw(img)
     for r in range(0, row):
         for c in range(0, column):
+            left = left + c * width
+            top = top + r * height
             start_point = (left + c * width, top + r * height)
             end_point = (left + (c + 1) * width, top + (r + 1) * height)
-            cv.rectangle(img, start_point, end_point,
-                         black, 2)
+
+            # 画框
+            cv.rectangle(img, start_point, end_point, black, 1)
+            # 填字
+            draw.text((left, top), u'大胃王狂欢', (255, 255, 0), font=FONT)
+
             points = [start_point, end_point]
             shape = Shape(label='rect')
             for x, y in points:
@@ -47,7 +81,13 @@ def randomTable(num):
     fileName = imagePath + num + IMAGE_EXT
     xmlName = xmlPath + num + XML_EXT
     print('fileName=', fileName)
-    cv.imwrite(fileName, img)
+
+    noise_percetage = random.uniform(0, .3)
+    print('noise_percetage=', noise_percetage)
+
+    SaltAndPepper_noiseImage = SaltAndPepper(img, 0)  # 添加10%的椒盐噪声
+
+    cv.imwrite(fileName, SaltAndPepper_noiseImage)
 
     savePascalVocFormat(xmlName, rectShapes, imagePath, img)
 
@@ -91,5 +131,20 @@ def savePascalVocFormat(filename, shapes, imagePath, image):
     return
 
 
-for i in range(4, 10000):
-    randomTable("%06d" % i)
+# for i in range(4, 10000):
+#    randomTable("%06d" % i)
+randomTable("000000noise")
+
+# srcImage = cv.imread("VOC2007/JPEGImages/000002.jpg")
+# cv.namedWindow("Original image")
+# cv.imshow("Original image", srcImage)
+#
+# gauss_noiseImage = addGaussianNoise(srcImage, 0.3)  # 添加10%的高斯噪声
+# cv.imshow("Add_GaussianNoise Image", gauss_noiseImage)
+# cv.imwrite("Glena.jpg ", gauss_noiseImage)
+#
+# SaltAndPepper_noiseImage = SaltAndPepper(srcImage, 0.1)  # 再添加10%的椒盐噪声
+# cv.imshow("Add_SaltAndPepperNoise Image", SaltAndPepper_noiseImage)
+#
+# cv.waitKey(0)
+# cv.destroyAllWindows()
