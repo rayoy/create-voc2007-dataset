@@ -21,3 +21,8 @@
 
 * 不同数据集标注格式、路径均不一样，需要适当修改
 * 不同数据集的`trainval.txt`和`test.txt`也不一样，需要自己设置
+
+
+add by rayoy
+1. 使用`create_Image*.py` 生成图片,实例生成了VOC2007格式表格及标注rect。
+2. 使用`create_ImageSets.py`来生成`ImagesSets`文件夹

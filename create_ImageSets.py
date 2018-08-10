@@ -14,7 +14,7 @@ _MAin_PATH = 'VOC2007/ImageSets/Main'
 _XML_FILE_PATH = 'VOC2007/Annotations'
 
 # Train数据集编号
-_TRAIN_NUMBER = 2000
+_TRAIN_NUMBER = 2895
 
 if __name__ == '__main__':
 
@@ -35,7 +35,13 @@ if __name__ == '__main__':
         print(len(files))
         for f in files:
             i = int(f.split('.')[0])
-            if i > _TRAIN_NUMBER:
+            if 1 < i < 400 or \
+                    2001 < i < 2400 or \
+                    20001 < i < 20400 or \
+                    22001 < i < 22400 or \
+                    24001 < i < 24400 or \
+                    26001 < i < 26400 or \
+                    28001 < i < 28400:
                 f_test.write(f.split('.')[0] + '\n')
             else:
                 f_train.write(f.split('.')[0] + '\n')

@@ -21,7 +21,11 @@ TEXT = ['当', '前', '逾', '期', '数', '赵', '钱', '孙', '李', '周', '�
         '人', '在', '他',
         '有', '这', '个', '上', '们', '来', '到', '时', '大', '地', '为', '子', '中', '你', '说', '生', '国', '年',
         '着', '就', '那', '和', '要', '她', '出', '也', '得', '里', '后', '自', '以', '乾', '坤', 'A', 'I', 'P',
-        "E"]
+        "E", '/', '*']
+TEXT2 = ['/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '~', '!', '@', '#', '$',
+         '%', '^', '&', '(', ')', 'Q', 'W', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F',
+         'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '[', ']', ';',
+         '-', '=']
 
 
 # 定义添加高斯噪声的函数
@@ -59,15 +63,15 @@ def randomText(word_count):
 
 def randomTable(num):
     # Create a black image
-    img = np.zeros((512, 512, 3), np.uint8)
+    img = np.zeros((512, 1280, 3), np.uint8)
     img.fill(255)
-    left = random.randint(20, 50)
-    top = random.randint(50, 50)
-    width = random.randint(100, 150)
-    height = random.randint(30, 70)
+    left = 50#random.randint(20, 50)
+    top = 60#random.randint(50, 60)
+    width = 50#random.randint(40, 50)
+    height = 70#random.randint(30, 70)
 
-    row = 4#random.randint(1, 4)
-    column =3# random.randint(1, 3)
+    row = 5#random.randint(2, 5)
+    column = 14#random.randint(7, 14)
 
     if row == 1 and column == 1:
         width, height = width * 2, height * 2
@@ -77,10 +81,46 @@ def randomTable(num):
     # print("image:{}, row num={}, column num ={} ".format(num, row, column))
 
     for r in range(0, row):
+        if r % 2 == 0:
+            cell_width = column * width
+            start_point = (left, top + r * height)
+            text_start_point = (
+                start_point[0] + int(width * 0.2), start_point[1] + int(height * 0.2))
+            end_point = (left + cell_width, top + (r + 1) * height)
+
+            # PIL image转换成array
+            img = Image.fromarray(np.uint8(img))
+            draw = ImageDraw.Draw(img)
+            word_height = int(height * 0.6)
+            FONT = ImageFont.truetype('fonts/simhei.ttf', word_height)
+            # 填字
+            draw.text(text_start_point, randomText(int(cell_width / word_height - 1)), BLACK,
+                      font=FONT)
+            # array转换成image
+            img = np.asarray(img)
+            # 画框
+            thickness = [1, 2]  # 表格线粗细随机
+            # cv.rectangle(img, start_point, end_point, BLACK, random.choice(thickness))
+
+            # 用线画矩形
+            top_right_point = (end_point[0], start_point[1])
+            bottom_left_point = (start_point[0], end_point[1])
+            cv.line(img, start_point, top_right_point, BLACK, 1)  # draw top line
+            cv.line(img, bottom_left_point, end_point, BLACK, 1)  # draw bottom line
+            cv.line(img, start_point, bottom_left_point, BLACK, 1)  # draw left line
+            cv.line(img, top_right_point, end_point, BLACK, 1)  # draw right line
+
+            points = [start_point, end_point]
+            shape = Shape(label='rect')
+            for x, y in points:
+                shape.addPoint(Point(x, y))
+            shape.close()
+            rectShapes.append(shape)
+            continue
         for c in range(0, column):
             start_point = (left + c * width, top + r * height)
             text_start_point = (
-                start_point[0] + int(width * 0.1), start_point[1] + int(height * 0.1))
+                start_point[0] + int(width * 0.2), start_point[1] + int(height * 0.2))
             end_point = (left + (c + 1) * width, top + (r + 1) * height)
 
             # PIL image转换成array
@@ -89,12 +129,20 @@ def randomTable(num):
             word_height = int(height * 0.6)
             FONT = ImageFont.truetype('fonts/simhei.ttf', word_height)
             # 填字
-            draw.text(text_start_point, randomText(int(width / word_height - 1)), BLACK, font=FONT)
+            draw.text(text_start_point, random.choice(TEXT2), BLACK, font=FONT)
             # array转换成image
             img = np.asarray(img)
             # 画框
             thickness = [1, 2]  # 表格线粗细随机
-            cv.rectangle(img, start_point, end_point, BLACK, random.choice(thickness))
+            # cv.rectangle(img, start_point, end_point, BLACK, random.choice(thickness))
+
+            # 用线画矩形
+            top_right_point = (end_point[0], start_point[1])
+            bottom_left_point = (start_point[0], end_point[1])
+            cv.line(img, start_point, top_right_point, BLACK, 1)  # draw top line
+            cv.line(img, bottom_left_point, end_point, BLACK, 1)  # draw bottom line
+            cv.line(img, start_point, bottom_left_point, BLACK, 1)  # draw left line
+            cv.line(img, top_right_point, end_point, BLACK, 1)  # draw right line
 
             points = [start_point, end_point]
             shape = Shape(label='rect')
@@ -103,13 +151,17 @@ def randomTable(num):
             shape.close()
             rectShapes.append(shape)
 
+    # cv.namedWindow(num, 0)
+    # cv.imshow(num, img)
+    # cv.waitKey(0)
+
     imagePath = 'VOC2007/JPEGImages/'
     xmlPath = 'VOC2007/Annotations/'
     fileName = imagePath + num + IMAGE_EXT
     xmlName = xmlPath + num + XML_EXT
     # print('fileName=', fileName)
 
-    noise_percetage = random.uniform(0, .25)
+    noise_percetage = random.uniform(0, .20)
     # print('noise_percetage=', noise_percetage)
 
     salt_noise_image = SaltAndPepper(img, noise_percetage)  # 添加的椒盐噪声
@@ -156,47 +208,27 @@ def savePascalVocFormat(filename, shapes, imagePath, image):
 
 # for i in range(10, 20001):
 #     randomTable("%06d" % i)
-randomTable("000001")
-#
-# class generateImageThread(threading.Thread):
-#     def __init__(self, name,s,e):
-#         threading.Thread.__init__(self)
-#         self.name = name
-#         self.s = s
-#         self.e = e
-#
-#     def run(self):
-#         print("开始线程：{},{}-{}".format(self.name, self.s, self.e))
-#         for index in range(self.s, self.e):
-#             num = "%06d" % index
-#             print(num)
-#             randomTable(num)
-#         print("退出线程：{},{}-{}".format(self.name, self.s, self.e))
-#
-#
-# # 多线程
-# for step in range(5000, 20000, 1000):
-#     thread = generateImageThread(step, step, step + 1000)
-#     # 开启新线程
-#     thread.start()
-#
-# thread = generateImageThread("Thread-3500", 3500, 5000)
-# thread.start()
+#合并单元格
+#randomTable("000001")
 
-# 删除：002001~020000
-print('delete image 002001.jpg ~ 020000.jpg')
-for index in range(2001, 20000):
-    num = "%06d" % index
-    imagePath = 'VOC2007/JPEGImages/'
-    xmlPath = 'VOC2007/Annotations/'
-    fileName = imagePath + num + IMAGE_EXT
-    xmlName = xmlPath + num + XML_EXT
-    if os.path.exists(fileName):
-        os.remove(fileName)
-    else:
-        print('no such file:', fileName)
+class generateImageThread(threading.Thread):
+    def __init__(self, name, s, e):
+        threading.Thread.__init__(self)
+        self.name = name
+        self.s = s
+        self.e = e
 
-    if os.path.exists(xmlName):
-        os.remove(xmlName)
-    else:
-        print('no such file:', xmlName)
+    def run(self):
+        print("开始线程：{},{}-{}".format(self.name, self.s, self.e))
+        for index in range(self.s, self.e):
+            num = "%06d" % index
+            print(num)
+            randomTable(num)
+        print("退出线程：{},{}-{}".format(self.name, self.s, self.e))
+
+
+# 多线程
+for step in range(26001, 28000, 50):
+    thread = generateImageThread(step, step, step + 50)
+    # 开启新线程
+    thread.start()
