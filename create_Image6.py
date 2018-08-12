@@ -22,7 +22,7 @@ TEXT = ['当', '前', '逾', '期', '数', '赵', '钱', '孙', '李', '周', '�
         '有', '这', '个', '上', '们', '来', '到', '时', '大', '地', '为', '子', '中', '你', '说', '生', '国', '年',
         '着', '就', '那', '和', '要', '她', '出', '也', '得', '里', '后', '自', '以', '乾', '坤', 'A', 'I', 'P',
         "E", '/', '*']
-TEXT2 = ['/', '*', 'N', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '~', '!', '@', '#', '$',
+TEXT2 = ['/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '~', '!', '@', '#', '$',
          '%', '^', '&', '(', ')', 'Q', 'W', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F',
          'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '[', ']', ';',
          '-', '=']
@@ -70,8 +70,8 @@ def randomTable(num):
     width = random.randint(40, 50)
     height = random.randint(30, 70)
 
-    row = random.randint(3,6)
-    column = random.randint(15, 24)
+    row = 6#random.randint(3, 6)
+    column = 18#random.randint(15, 24)
 
     if row == 1 and column == 1:
         width, height = width * 2, height * 2
@@ -81,8 +81,9 @@ def randomTable(num):
     # print("image:{}, row num={}, column num ={} ".format(num, row, column))
 
     merge_row = row / 2
+    merge_start_point = ()
     for r in range(0, row):
-        if r < merge_row:
+        if r <= merge_row:
             cell_width = column * width
             start_point = (left, top + r * height)
             text_start_point = (
@@ -108,17 +109,20 @@ def randomTable(num):
             bottom_left_point = (start_point[0], end_point[1])
             if r == 0:
                 cv.line(img, start_point, top_right_point, BLACK, 1)  # draw top line
+                merge_start_point = start_point
             if r == merge_row:
                 cv.line(img, bottom_left_point, end_point, BLACK, 1)  # draw bottom line
+                points = [merge_start_point, end_point]
+                shape = Shape(label='rect')
+                for x, y in points:
+                    shape.addPoint(Point(x, y))
+                shape.close()
+                rectShapes.append(shape)
+
             cv.line(img, start_point, bottom_left_point, BLACK, 1)  # draw left line
             cv.line(img, top_right_point, end_point, BLACK, 1)  # draw right line
 
-            points = [start_point, end_point]
-            shape = Shape(label='rect')
-            for x, y in points:
-                shape.addPoint(Point(x, y))
-            shape.close()
-            rectShapes.append(shape)
+
             continue
         for c in range(0, column):
             start_point = (left + c * width, top + r * height)

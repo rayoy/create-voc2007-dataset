@@ -1,9 +1,9 @@
 <annotation>
-	<folder>VOC2007</folder>
-	<filename>b04ac4f0-792d-11e8-94da-8c85909e1e94.jpg</filename>
-	<path>/Users/baidu/pythonProjects/create-voc2007-dataset/VOC2007/JPEGImages/000001.jpg</path>
+	<folder>JPEGImages</folder>
+	<filename>100000.jpg</filename>
+	<path>/Users/baidu/pythonProjects/create-voc2007-dataset/VOC2007/JPEGImages/100000.jpg</path>
 	<source>
-		<database>The VOC2007 Database</database>
+		<database>Unknown</database>
 	</source>
 	<size>
 		<width>0</width>
@@ -17,8 +17,8 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>17</xmin>
-			<ymin>18</ymin>
+			<xmin>10</xmin>
+			<ymin>13</ymin>
 			<xmax>1332</xmax>
 			<ymax>115</ymax>
 		</bndbox>
@@ -597,6 +597,66 @@
 			<ymin>490</ymin>
 			<xmax>1336</xmax>
 			<ymax>562</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>rect</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>166</xmin>
+			<ymin>367</ymin>
+			<xmax>337</xmax>
+			<ymax>432</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>rect</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>320</xmin>
+			<ymin>370</ymin>
+			<xmax>666</xmax>
+			<ymax>436</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>rect</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>652</xmin>
+			<ymin>368</ymin>
+			<xmax>841</xmax>
+			<ymax>443</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>rect</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>815</xmin>
+			<ymin>375</ymin>
+			<xmax>992</xmax>
+			<ymax>445</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>rect</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>973</xmin>
+			<ymin>379</ymin>
+			<xmax>1332</xmax>
+			<ymax>445</ymax>
 		</bndbox>
 	</object>
 </annotation>
