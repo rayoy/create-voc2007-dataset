@@ -226,7 +226,7 @@ class generateImageThread(threading.Thread):
 
 
 # 多线程
-for step in range(22001, 24000, 50):
+for step in range(34001, 36000, 50):
     thread = generateImageThread(step, step, step + 50)
     # 开启新线程
     thread.start()

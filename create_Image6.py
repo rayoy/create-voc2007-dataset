@@ -63,15 +63,15 @@ def randomText(word_count):
 
 def randomTable(num):
     # Create a black image
-    img = np.zeros((512, 1280, 3), np.uint8)
+    img = np.zeros((512, 512, 3), np.uint8)
     img.fill(255)
     left = random.randint(20, 50)
     top = random.randint(50, 60)
     width = random.randint(40, 50)
     height = random.randint(30, 70)
 
-    row = 6#random.randint(3, 6)
-    column = 18#random.randint(15, 24)
+    row = random.randint(3, 6)
+    column = random.randint(4, 8)
 
     if row == 1 and column == 1:
         width, height = width * 2, height * 2
@@ -121,7 +121,6 @@ def randomTable(num):
 
             cv.line(img, start_point, bottom_left_point, BLACK, 1)  # draw left line
             cv.line(img, top_right_point, end_point, BLACK, 1)  # draw right line
-
 
             continue
         for c in range(0, column):
@@ -235,7 +234,7 @@ class generateImageThread(threading.Thread):
 
 
 # 【第一行合并单元格带折行】多线程
-for step in range(28001, 30000, 50):
+for step in range(38001, 40000, 50):
     thread = generateImageThread(step, step, step + 50)
     # 开启新线程
     thread.start()

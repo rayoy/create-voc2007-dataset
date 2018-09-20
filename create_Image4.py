@@ -233,19 +233,19 @@ def savePascalVocFormat(filename, shapes, imagePath, image):
 
 
 # 删除掉 生成的图片
-print('delete image 024001.jpg ~ 026000.jpg')
-for index in range(24001, 26000):
-    num = "%06d" % index
-    imagePath = 'VOC2007/JPEGImages/'
-    xmlPath = 'VOC2007/Annotations/'
-    fileName = imagePath + num + IMAGE_EXT
-    xmlName = xmlPath + num + XML_EXT
-    if os.path.exists(fileName):
-        os.remove(fileName)
-    else:
-        print('no such file:', fileName)
-
-    if os.path.exists(xmlName):
-        os.remove(xmlName)
-    else:
-        print('no such file:', xmlName)
+# print('delete image 024001.jpg ~ 026000.jpg')
+# for index in range(24001, 26000):
+#     num = "%06d" % index
+#     imagePath = 'VOC2007/JPEGImages/'
+#     xmlPath = 'VOC2007/Annotations/'
+#     fileName = imagePath + num + IMAGE_EXT
+#     xmlName = xmlPath + num + XML_EXT
+#     if os.path.exists(fileName):
+#         os.remove(fileName)
+#     else:
+#         print('no such file:', fileName)
+#
+#     if os.path.exists(xmlName):
+#         os.remove(xmlName)
+#     else:
+#         print('no such file:', xmlName)

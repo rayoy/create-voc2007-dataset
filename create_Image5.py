@@ -21,10 +21,10 @@ TEXT = ['当', '前', '逾', '期', '数', '赵', '钱', '孙', '李', '周', '�
         '人', '在', '他',
         '有', '这', '个', '上', '们', '来', '到', '时', '大', '地', '为', '子', '中', '你', '说', '生', '国', '年',
         '着', '就', '那', '和', '要', '她', '出', '也', '得', '里', '后', '自', '以', '乾', '坤', 'A', 'I', 'P',
-        "E", '/', '*']
-TEXT2 = ['/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '~', '!', '@', '#', '$',
+        "E"]
+TEXT2 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '~', '!', '@', '#', '$',
          '%', '^', '&', '(', ')', 'Q', 'W', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F',
-         'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '[', ']', ';',
+         'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', ' ', '[', ']', ';',
          '-', '=']
 
 
@@ -63,15 +63,15 @@ def randomText(word_count):
 
 def randomTable(num):
     # Create a black image
-    img = np.zeros((512, 1280, 3), np.uint8)
+    img = np.zeros((512, 512, 3), np.uint8)
     img.fill(255)
-    left = 50#random.randint(20, 50)
-    top = 60#random.randint(50, 60)
-    width = 50#random.randint(40, 50)
-    height = 70#random.randint(30, 70)
+    left = random.randint(20, 50)
+    top = random.randint(50, 60)
+    width = random.randint(40, 50)
+    height = random.randint(30, 70)
 
-    row = 5#random.randint(2, 5)
-    column = 14#random.randint(7, 14)
+    row = random.randint(2, 5)
+    column = random.randint(4, 8)
 
     if row == 1 and column == 1:
         width, height = width * 2, height * 2
@@ -208,7 +208,7 @@ def savePascalVocFormat(filename, shapes, imagePath, image):
 
 # for i in range(10, 20001):
 #     randomTable("%06d" % i)
-#合并单元格
+# 合并单元格 + 小表格
 #randomTable("000001")
 
 class generateImageThread(threading.Thread):
@@ -228,7 +228,7 @@ class generateImageThread(threading.Thread):
 
 
 # 多线程
-for step in range(26001, 28000, 50):
+for step in range(36001, 38000, 50):
     thread = generateImageThread(step, step, step + 50)
     # 开启新线程
     thread.start()
