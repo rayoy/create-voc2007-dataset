@@ -26,3 +26,7 @@
 add by rayoy
 1. 使用`create_Image*.py` 生成图片,实例生成了VOC2007格式表格及标注rect。
 2. 使用`create_ImageSets.py`来生成`ImagesSets`文件夹
+
+**tag & branch**
+1. 矩形框标注：label_rect
+2. 矩形框和文字标注：master分支

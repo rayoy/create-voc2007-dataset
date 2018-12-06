@@ -89,8 +89,24 @@ def randomTable(num):
             draw = ImageDraw.Draw(img)
             word_height = int(height * 0.6)
             FONT = ImageFont.truetype('fonts/simhei.ttf', word_height)
+
+            # 字数量
+            word_sum = int(width / word_height - 1)
+            random_text = randomText(word_sum)
+            text_end_point = (text_start_point[0] + word_height * word_sum,
+                              text_start_point[1] + word_height)
             # 填字
-            draw.text(text_start_point, randomText(int(width / word_height - 1)), BLACK, font=FONT)
+            draw.text(text_start_point, random_text, BLACK, font=FONT)
+
+            # 标注文字
+            text_points = [text_start_point, text_end_point]
+            text_shape = Shape(label='text')
+            for x, y in text_points:
+                text_shape.addPoint(Point(x, y))
+            text_shape.close()
+            rectShapes.append(text_shape)
+
+
             # array转换成image
             img = np.asarray(img)
             # 画框
@@ -123,8 +139,24 @@ def randomTable(num):
             draw = ImageDraw.Draw(img)
             word_height = int(height * 0.6)
             FONT = ImageFont.truetype('fonts/simhei.ttf', word_height)
+
+            # 字数量
+            word_sum = int(width / word_height - 1)
+            random_text = randomText(word_sum)
+            text_end_point = (text_start_point[0] + word_height * word_sum,
+                              text_start_point[1] + word_height)
             # 填字
-            draw.text(text_start_point, randomText(int(width / word_height - 1)), BLACK, font=FONT)
+            draw.text(text_start_point, random_text, BLACK, font=FONT)
+
+            # 标注文字
+            text_points = [text_start_point, text_end_point]
+            text_shape = Shape(label='text')
+            for x, y in text_points:
+                text_shape.addPoint(Point(x, y))
+            text_shape.close()
+            rectShapes.append(text_shape)
+
+
             # array转换成image
             img = np.asarray(img)
             # 画框
@@ -204,11 +236,11 @@ def savePascalVocFormat(filename, shapes, imagePath, image):
     return
 
 
-# for i in range(10, 20001):
-#     randomTable("%06d" % i)
 # 纵向合并单元格
-#randomTable("000001")
-#
+# for i in range(1, 20):
+#     randomTable("%06d" % i)
+
+
 class generateImageThread(threading.Thread):
     def __init__(self, name,s,e):
         threading.Thread.__init__(self)

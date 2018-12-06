@@ -80,9 +80,13 @@ def randomTable(num):
 
     # print("image:{}, row num={}, column num ={} ".format(num, row, column))
 
-    merge_row = row / 2
+    merge_row = int(row / 2)
+    print("merge_row=", merge_row)
     merge_start_point = ()
+    merge_text_start_point = ()
     for r in range(0, row):
+        # 先处理合并单元格的行
+        print("r%d", r)
         if r <= merge_row:
             cell_width = column * width
             start_point = (left, top + r * height)
@@ -95,9 +99,16 @@ def randomTable(num):
             draw = ImageDraw.Draw(img)
             word_height = int(height * 0.6)
             FONT = ImageFont.truetype('fonts/simhei.ttf', word_height)
+
+            # 字数量
+            word_sum = int(cell_width / word_height - 1)
+            random_text = randomText(word_sum)
+            text_end_point = (text_start_point[0] + word_height * word_sum,
+                              text_start_point[1] +
+                              word_height)
             # 填字
-            draw.text(text_start_point, randomText(int(cell_width / word_height - 1)), BLACK,
-                      font=FONT)
+            draw.text(text_start_point, random_text, BLACK, font=FONT)
+
             # array转换成image
             img = np.asarray(img)
             # 画框
@@ -110,7 +121,9 @@ def randomTable(num):
             if r == 0:
                 cv.line(img, start_point, top_right_point, BLACK, 1)  # draw top line
                 merge_start_point = start_point
+                merge_text_start_point = text_start_point
             if r == merge_row:
+                print("merge_row")
                 cv.line(img, bottom_left_point, end_point, BLACK, 1)  # draw bottom line
                 points = [merge_start_point, end_point]
                 shape = Shape(label='rect')
@@ -118,6 +131,14 @@ def randomTable(num):
                     shape.addPoint(Point(x, y))
                 shape.close()
                 rectShapes.append(shape)
+
+                # 标注文字
+                text_points = [merge_text_start_point, text_end_point]
+                text_shape = Shape(label='text')
+                for x, y in text_points:
+                    text_shape.addPoint(Point(x, y))
+                text_shape.close()
+                rectShapes.append(text_shape)
 
             cv.line(img, start_point, bottom_left_point, BLACK, 1)  # draw left line
             cv.line(img, top_right_point, end_point, BLACK, 1)  # draw right line
@@ -134,8 +155,20 @@ def randomTable(num):
             draw = ImageDraw.Draw(img)
             word_height = int(height * 0.6)
             FONT = ImageFont.truetype('fonts/simhei.ttf', word_height)
+
+            text_end_point = (text_start_point[0] + word_height * 0.75,
+                              text_start_point[1] + word_height)
             # 填字
             draw.text(text_start_point, random.choice(TEXT2), BLACK, font=FONT)
+
+            # 标注文字
+            text_points = [text_start_point, text_end_point]
+            text_shape = Shape(label='text')
+            for x, y in text_points:
+                text_shape.addPoint(Point(x, y))
+            text_shape.close()
+            rectShapes.append(text_shape)
+
             # array转换成image
             img = np.asarray(img)
             # 画框
@@ -212,10 +245,11 @@ def savePascalVocFormat(filename, shapes, imagePath, image):
     return
 
 
-# for i in range(10, 20001):
-#     randomTable("%06d" % i)
+
 # 第一行合并单元格带折行:通过构建矩形框是否显示四条边的线实现单元格合并功能.
-#randomTable("000001")
+# for i in range(1, 10):
+#     randomTable("%06d" % i)
+
 
 class generateImageThread(threading.Thread):
     def __init__(self, name, s, e):
@@ -231,7 +265,6 @@ class generateImageThread(threading.Thread):
             print(num)
             randomTable(num)
         print("退出线程：{},{}-{}".format(self.name, self.s, self.e))
-
 
 # 【第一行合并单元格带折行】多线程
 for step in range(38001, 40000, 50):
