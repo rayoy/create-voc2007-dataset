@@ -21,6 +21,7 @@
 
 * 不同数据集标注格式、路径均不一样，需要适当修改
 * 不同数据集的`trainval.txt`和`test.txt`也不一样，需要自己设置
+* Mac需要删除.DS_Store文件 `find . -name '.DS_Store' | xargs rm -rf {}`
 
 
 add by rayoy
